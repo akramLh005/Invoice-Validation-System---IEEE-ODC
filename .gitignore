@@ -1,0 +1,12 @@
+venv/
+.venv/
+
+*.pyc
+__pycache__/
+.DS_Store
+.idea/
+*.swp
+.vscode/
+
+checkpoints
+object detection/checkpoints
