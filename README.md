@@ -1,7 +1,56 @@
 # Invoice-Validation-System---IEEE-ODC
 
-# Invoice validation 
+# Invoice validation API
 
+
+This Invoice Validation System API is designed for the IEEE-ODC internship project and uses deep learning models to validate various components of invoices. The API is built with FastAPI and leverages a pre-trained models.
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+Before you start, ensure you have the following installed:
+- Python 3.8 or higher
+- pip (Python package installer)
+
+### Installation
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/akramLh005/Invoice-Validation-System---IEEE-ODC.git
+   cd Invoice-Validation-System---IEEE-ODC/API
+   ```
+   
+ 2. **Set Up a Virtual Environment (Optional but recommended)**
+ 
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
+
+3. **Install Dependencies**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+    
+### Preparing the Model
+
+Before starting the server, ensure the **checkpoints directory is appropriately set up**:
+
+Checkpoints Directory: Verify that the checkpoints folder is not empty and contains the model files . The API relies on these pre-trained models to function correctly.
+
+### Running the Server
+
+To start the FastAPI server:
+
+```bash
+uvicorn app:main --reload
+```
+This will launch the server on **http://127.0.0.1:8000**, where you can access the API documentation and test endpoints via Swagger UI or Postman.
 
 
 
