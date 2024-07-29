@@ -23,19 +23,34 @@ Before you start, ensure you have the following installed:
    git clone https://github.com/akramLh005/Invoice-Validation-System---IEEE-ODC.git
    cd Invoice-Validation-System---IEEE-ODC/API
    ```
-   
- 2. **Set Up a Virtual Environment (Optional but recommended)**
- 
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-    ```
 
-3. **Install Dependencies**
+## I- OBJECT DETECTION : 
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+### Running the Application with Docker Compose
+
+This guide will walk you through setting up and running the application using Docker Compose, which simplifies the process of managing multi-container Docker applications. The setup includes containers for both the FastAPI server and TorchServe.
+
+#### Prerequisites
+
+- **Docker**: You need Docker installed on your machine. [Download Docker](https://www.docker.com/products/docker-desktop).
+- **Docker Compose**: Ensure Docker Compose is installed. It usually comes with the Docker Desktop installation.
+
+#### Setup
+
+1. **Clone the Repository**:
+   If you haven't already, clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/your-github-username/your-repository.git
+   cd object detection
+   ```
+2. **Build and Run the Containers:**
+Use Docker Compose to build and start the services defined in your **docker-compose.yml:**
+   ```bash
+
+   docker-compose up --build
+   ```
+This command builds the images if they don't exist and starts the containers. The **--build** flag ensures that the images are re-built if there are changes.
+
     
 ### Preparing the Model
 
@@ -43,15 +58,51 @@ Before starting the server, ensure the **checkpoints directory is appropriately 
 
 Checkpoints Directory: Verify that the checkpoints folder is not empty and contains the model files . The API relies on these pre-trained models to function correctly.
 
-### Running the Server
+### Running the Server locally 
+ 
+1. **Set Up a Virtual Environment (Optional but recommended)**
+ 
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
 
-To start the FastAPI server:
+2. **Install Dependencies**
+
+    ```bash
+    pip install -r requirements_ALL.txt
+    ```
+3. **To start the FastAPI server:**
 
 ```bash
 uvicorn app:main --reload
 ```
 This will launch the server on **http://127.0.0.1:8000**, where you can access the API documentation and test endpoints via Swagger UI or Postman.
 
+## Interacting with the API using Postman
+
+Postman is a popular tool for testing APIs. It allows you to easily configure the requests, inspect the responses, and interact with APIs in a user-friendly interface. Here's how to send an invoice file to the FastAPI application using Postman:
+
+### Setting Up Postman
+
+1. **Download and Install Postman**:
+   - If you haven't already installed Postman, download it from [Postman's official website](https://www.postman.com/downloads/) and install it on your machine.
+
+2. **Create a New Request**:
+   - Open Postman.
+   - Click on the "New" button or the "+" tab to create a new request.
+
+### Configuring the Request
+
+3. **Set Up the Request Details**:
+   - **Method**: Select `POST` from the dropdown menu.
+   - **Request URL**: Enter `http://localhost:8000/detect` as the request URL.
+
+4. **Configure the Request Body**:
+   - Click on the 'Body' tab below the URL field.
+   - Choose 'form-data' from the options available.
+   - In the 'KEY' field, type `file`.
+   - On the right side of the key field, change
 
 
 
