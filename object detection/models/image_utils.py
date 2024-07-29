@@ -2,6 +2,8 @@ from io import BytesIO
 import torch
 import cv2
 import numpy as np
+import fitz  # PyMuPDF (also known as PyMuPDF)
+import numpy as np
 
 # Set device
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -33,6 +35,49 @@ def read_and_preprocess_image(file: BytesIO):
     image_input = torch.tensor(image_input, dtype=torch.float).to(DEVICE)
     image_input = torch.unsqueeze(image_input, 0)
     return image_input, orig_image
+
+
+# Define parameters
+THRESHOLD = 220
+STDDEV_THRESHOLD = 15
+
+def is_blank_image_page(pix, threshold=THRESHOLD, stddev_threshold=STDDEV_THRESHOLD):
+    """
+    Determine if the page is visually blank by analyzing image data.
+    """
+    # Convert pixmap samples to a numpy array
+    image_array = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
+    if pix.n >= 3:  # Assuming RGB or RGBA
+        gray = np.dot(image_array[..., :3], [0.2989, 0.5870, 0.1140])  # Convert to grayscale assuming RGB
+    else:
+        gray = image_array
+
+    mean_intensity = np.mean(gray)
+    stddev_intensity = np.std(gray)
+
+    # Determine if the page is blank based on mean intensity and standard deviation
+    return mean_intensity > threshold and stddev_intensity < stddev_threshold
+
+def convert_pdf_to_images(file_stream):
+    """
+    Converts each non-blank page of a PDF to an image array and returns them.
+    
+    Args:
+        file_stream: A stream of the PDF file (e.g., from an upload).
+
+    Returns:
+        List of image arrays of non-blank pages.
+    """
+    doc = fitz.open(stream=file_stream, filetype="pdf")
+    images = []
+    for page in doc:  # Iterate over each page
+        pix = page.get_pixmap()  # Render page to an image
+        if not is_blank_image_page(pix):  # Check if the page is not blank
+            img = np.frombuffer(pix.tobytes(), dtype=np.uint8).reshape(pix.height, pix.width, 3 if pix.alpha == 0 else 4)
+            images.append(img)
+    doc.close()
+    return images
+
 
 def draw_bounding_boxes(orig_image, boxes, pred_classes, scores, COLORS, CLASSES):
     """

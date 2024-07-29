@@ -4,7 +4,7 @@ from transformers import LayoutLMv3ForTokenClassification, LayoutLMv3Processor
 class InvoiceModel:
     def __init__(self, model_path, processor_name="microsoft/layoutlmv3-base", apply_ocr=True):
         # Load the model and processor with provided parameters
-        self.model = LayoutLMv3ForTokenClassification.from_pretrained("./checkpoint-2000-focalloss-azure")
+        self.model = LayoutLMv3ForTokenClassification.from_pretrained("./checkpoints/checkpoint-2000-focalloss-azure")
         self.processor = LayoutLMv3Processor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=True)
 
     def run_inference(self, image):

@@ -1,12 +1,10 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 from PIL import Image
-import io,time
+import io, time
 from TR_invoice_model import InvoiceModel
 import pytesseract
 pytesseract.pytesseract.tesseract_cmd = r'D:\Program Files\Tesseract-OCR\tesseract.exe'
-
-
 
 
 app = FastAPI()
