@@ -37,10 +37,9 @@ This guide will walk you through setting up and running the application using Do
 
 #### Setup
 
-1. **Clone the Repository**:
+1. **Object detection folder**:
    If you haven't already, clone the repository to your local machine:
    ```bash
-   git clone https://github.com/your-github-username/your-repository.git
    cd object detection
    ```
 2. **Build and Run the Containers:**
