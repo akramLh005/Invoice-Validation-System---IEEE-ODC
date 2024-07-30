@@ -26,7 +26,7 @@ Before you start, ensure you have the following installed:
 
 ## I- OBJECT DETECTION : 
 
-### Running the Application with Docker Compose
+### 1. Running the Application with Docker Compose
 
 This guide will walk you through setting up and running the application using Docker Compose, which simplifies the process of managing multi-container Docker applications. The setup includes containers for both the FastAPI server and TorchServe.
 
@@ -51,33 +51,35 @@ Use Docker Compose to build and start the services defined in your **docker-comp
 This command builds the images if they don't exist and starts the containers. The **--build** flag ensures that the images are re-built if there are changes.
 
     
-### Preparing the Model
+ 
+
+### 2. Running the Server locally 
+**1. Preparing the Model**
 
 Before starting the server, ensure the **checkpoints directory is appropriately set up**:
 
 Checkpoints Directory: Verify that the checkpoints folder is not empty and contains the model files . The API relies on these pre-trained models to function correctly.
-
-### Running the Server locally 
  
-1. **Set Up a Virtual Environment (Optional but recommended)**
+2. **Set Up a Virtual Environment (Optional but recommended)**
  
     ```bash
     python -m venv venv
     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
     ```
 
-2. **Install Dependencies**
+3. **Install Dependencies**
 
     ```bash
     pip install -r requirements_ALL.txt
     ```
-3. **To start the FastAPI server:**
+4. **To start the FastAPI server:**
 
 ```bash
-uvicorn app:main --reload
+uvicorn app:app --reload
 ```
 This will launch the server on **http://127.0.0.1:8000**, where you can access the API documentation and test endpoints via Swagger UI or Postman.
 
+-------------------------------------------------------------------------------------------------------------------------------
 ## Interacting with the API using Postman
 
 Postman is a popular tool for testing APIs. It allows you to easily configure the requests, inspect the responses, and interact with APIs in a user-friendly interface. Here's how to send an invoice file to the FastAPI application using Postman:
