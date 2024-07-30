@@ -108,8 +108,6 @@ Postman is a popular tool for testing APIs. It provides a user-friendly interfac
    - In the key field, type `file`. Select 'File' from the dropdown on the right (it defaults to 'Text').
    - Click the 'Select Files' button next to the newly created 'file' key and choose the invoice image you wish to upload from your file system.
 
-![Postman Setup](https://via.placeholder.com/600x300?text=Postman+Setup)  *Image illustrating Postman setup*
-
 4. **Send the Request:**
    - Click the 'Send' button.
    - Postman will process the request and display the response in the lower section of the interface.
@@ -119,7 +117,7 @@ Postman is a popular tool for testing APIs. It provides a user-friendly interfac
 After sending the request, you can view the API response in the 'Response' section at the bottom. The API should return a JSON object containing details about the detected elements in the invoice, such as the presence of signatures or stamps.
 
 ```json
-{
+[{
   "filename": "invoice.png",
   "detected_classes": {
     "signature": {
@@ -133,7 +131,63 @@ After sending the request, you can view the API response in the 'Response' secti
       "detections": []
     }
   }
-}
+}]
+
+### Handling PDFs with Multiple Invoices
+
+When sending a PDF file that contains multiple invoices, the API is capable of processing each page as a separate invoice. The response will include a JSON array where each element corresponds to an individual invoice's detection results. Here’s an example of how to send a PDF and what response you might expect:
+
+#### Sending a PDF
+
+To send a PDF containing multiple invoices:
+
+1. **Follow the Same Steps as for Image Files**:
+   - Open Postman.
+   - Create a new POST request to `http://localhost:8000/detect`.
+   - Set the body to 'form-data' and add a file field.
+   - Upload your PDF file containing multiple invoices.
+
+#### Example JSON Response for Multiple Invoices
+
+The response for a PDF with multiple invoices will include an array of objects, each representing the detection results for each invoice:
+
+```json
+[
+  {
+    "filename": "invoice1_page1.png",
+    "detected_classes": {
+      "signature": {
+        "present": true,
+        "detections": [
+          {"box": [50, 50, 200, 200], "score": 0.95}
+        ]
+      },
+      "stamp": {
+        "present": false,
+        "detections": []
+      }
+    }
+  },
+  {
+    "filename": "invoice2_page2.png",
+    "detected_classes": {
+      "signature": {
+        "present": true,
+        "detections": [
+          {"box": [150, 150, 250, 250], "score": 0.92}
+        ]
+      },
+      "stamp": {
+        "present": true,
+        "detections": [
+          {"box": [100, 100, 160, 160], "score": 0.88}
+        ]
+      }
+    }
+  }
+]
+
+
 
 
 
