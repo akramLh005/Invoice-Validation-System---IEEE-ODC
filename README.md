@@ -132,7 +132,7 @@ After sending the request, you can view the API response in the 'Response' secti
     }
   }
 }]
-
+```
 ### Handling PDFs with Multiple Invoices
 
 When sending a PDF file that contains multiple invoices, the API is capable of processing each page as a separate invoice. The response will include a JSON array where each element corresponds to an individual invoice's detection results. Here’s an example of how to send a PDF and what response you might expect:
@@ -186,9 +186,7 @@ The response for a PDF with multiple invoices will include an array of objects, 
     }
   }
 ]
-
-
-
+```
 
 
 
