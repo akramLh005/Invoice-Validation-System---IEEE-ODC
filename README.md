@@ -53,7 +53,7 @@ This command builds the images if they don't exist and starts the containers. Th
     
  
 
-### 2. Running the Server locally 
+### 2. Running the Server manually
 **1. Preparing the Model**
 
 Before starting the server, ensure the **checkpoints directory is appropriately set up**:
