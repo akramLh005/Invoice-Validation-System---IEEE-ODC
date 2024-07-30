@@ -82,28 +82,58 @@ This will launch the server on **http://127.0.0.1:8000**, where you can access t
 -------------------------------------------------------------------------------------------------------------------------------
 ## Interacting with the API using Postman
 
-Postman is a popular tool for testing APIs. It allows you to easily configure the requests, inspect the responses, and interact with APIs in a user-friendly interface. Here's how to send an invoice file to the FastAPI application using Postman:
+Postman is a popular tool for testing APIs. It provides a user-friendly interface for sending requests to API endpoints and viewing responses. Here’s how you can use Postman to send invoices to the FastAPI service running at `http://localhost:8000/detect`.
 
 ### Setting Up Postman
 
-1. **Download and Install Postman**:
-   - If you haven't already installed Postman, download it from [Postman's official website](https://www.postman.com/downloads/) and install it on your machine.
+1. **Download and Install Postman:**
+   - If you haven't already installed Postman, you can download it from [Postman's official website](https://www.postman.com/downloads/).
 
-2. **Create a New Request**:
-   - Open Postman.
-   - Click on the "New" button or the "+" tab to create a new request.
+2. **Open Postman:**
+   - Launch the Postman application.
 
-### Configuring the Request
+### Sending an Invoice to the API
 
-3. **Set Up the Request Details**:
-   - **Method**: Select `POST` from the dropdown menu.
-   - **Request URL**: Enter `http://localhost:8000/detect` as the request URL.
+1. **Create a New Request:**
+   - Click the "New" button in the upper left corner and select "Request".
+   - This opens a new tab where you can configure your request.
 
-4. **Configure the Request Body**:
-   - Click on the 'Body' tab below the URL field.
-   - Choose 'form-data' from the options available.
-   - In the 'KEY' field, type `file`.
-   - On the right side of the key field, change
+2. **Configure the Request:**
+   - **HTTP Method**: Set the method to `POST` by selecting it from the dropdown menu next to the URL input field.
+   - **Request URL**: Enter `http://localhost:8000/detect` as the URL.
+
+3. **Add Multipart/Form-Data:**
+   - Navigate to the 'Body' tab below the URL field.
+   - Select 'form-data' from the list of options.
+   - In the key field, type `file`. Select 'File' from the dropdown on the right (it defaults to 'Text').
+   - Click the 'Select Files' button next to the newly created 'file' key and choose the invoice image you wish to upload from your file system.
+
+![Postman Setup](https://via.placeholder.com/600x300?text=Postman+Setup)  *Image illustrating Postman setup*
+
+4. **Send the Request:**
+   - Click the 'Send' button.
+   - Postman will process the request and display the response in the lower section of the interface.
+
+### Reviewing the Response
+
+After sending the request, you can view the API response in the 'Response' section at the bottom. The API should return a JSON object containing details about the detected elements in the invoice, such as the presence of signatures or stamps.
+
+```json
+{
+  "filename": "invoice.png",
+  "detected_classes": {
+    "signature": {
+      "present": true,
+      "detections": [
+        {"box": [50, 50, 200, 200], "score": 0.95}
+      ]
+    },
+    "stamp": {
+      "present": false,
+      "detections": []
+    }
+  }
+}
 
 
 
