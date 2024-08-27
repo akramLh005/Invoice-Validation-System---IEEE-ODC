@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  od:
+    build:
+      context: ./object_detection/torchserve
+      args:
+        MODEL_TYPE: onnx # default
+    networks:
+      - app-network
+    ports:
+      - "8082:8080"
+      - "8083:8081"
+    deploy:
+      resources:
+        limits:
+          cpus: '8.0'
+          memory: 4G
+  tr:
+    build:
+      context: ./torchserve_TR
+    networks:
+      - app-network
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    deploy:
+      resources:
+        limits:
+          cpus: '8.0'
+          memory: 4G
+
+  fastapi:
+    build: .
+    networks:
+      - app-network
+    depends_on:
+      - od
+      - tr
+    ports:
+      - "8000:8000"
+
+networks:
+  app-network:
+    driver: bridge

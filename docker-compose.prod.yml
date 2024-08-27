@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  od:
+    # Use pre-built image from Docker Hub. Make sure to pull the latest version before running:
+    # docker pull yourdockerhubusername/object_detection_torchserve:latest
+    image: model_onnx:latest
+    ports:
+      - "8082:8080"
+      - "8083:8081"
+    networks:
+      - app-network
+
+  tr:
+    # Use pre-built image from Docker Hub. Make sure to pull the latest version before running:
+    # docker pull yourdockerhubusername/torchserve_tr:latest
+    image: ts2:latest
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - app-network
+
+  fastapi:
+    # Use pre-built image from Docker Hub. Make sure to pull the latest version before running:
+    # docker pull yourdockerhubusername/fastapi_app:latest
+    image: main_app2:latest
+    depends_on:
+      - od
+      - tr
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

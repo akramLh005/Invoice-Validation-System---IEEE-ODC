@@ -1,0 +1,11 @@
+{
+  "threshold": 0.3,
+  "colors": [
+      [255, 0, 0],
+      [0, 255, 0],
+      [0, 0, 255]
+  ],
+  "classes": ["__background__", "stamp", "signature"],
+  "retinanet_torch_serve_url": "http://localhost:8080/predictions/retinanet",
+  "allowed_ips": ["*"]
+}

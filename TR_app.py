@@ -1,48 +1,43 @@
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import JSONResponse
-from PIL import Image
-import io, time
-from TR_invoice_model import InvoiceModel
-import pytesseract
-pytesseract.pytesseract.tesseract_cmd = r'D:\Program Files\Tesseract-OCR\tesseract.exe'
+import json
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from starlette.responses import JSONResponse
+import requests
 
+
+# Load the configuration
+with open('config.json') as config_file:
+    config = json.load(config_file)
+
+TORCHSERVE_URL = config['LMv3_torch_serve_url']
 
 app = FastAPI()
-model = InvoiceModel("./checkpoint-2000-focalloss-azure", "microsoft/layoutlmv3-base", True)
-
-@app.post("/")
-async def Hello():
-    return "hello World"
-
-@app.post("/test")
-async def predict(file: UploadFile = File(...)):
-    return {"filename": file.filename}
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-    image_bytes = await file.read()
-    image = Image.open(io.BytesIO(image_bytes))
+    try:
+        image_bytes = await file.read()
 
-    start_time = time.time()
+        # Send the image to TorchServe for inference
+        response = requests.post(TORCHSERVE_URL, files={"data": image_bytes})
+        response.raise_for_status()
+        
+        # Parse the response from TorchServe
+        data = response.json()
+        labels = data.get('labels', [])
+        
+        # Process labels to remove IOB tags and collect unique field names
+        unique_fields = set()
+        for label in labels:
+            if label.startswith(('B-', 'I-')):
+                normalized_label = label[2:]
+            else:
+                normalized_label = label
+            unique_fields.add(normalized_label)
 
-    labels, boxes = model.run_inference(image)
-    inference_time = time.time() - start_time
+        unique_fields.discard('O')
 
-    response_data = {"inference time in seconds ": inference_time}
-    return JSONResponse(content=response_data)
+        return JSONResponse(content={"fields": list(unique_fields)})
 
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-@app.post("/predict2")
-async def predict(file: UploadFile = File(...)):
-    image_bytes = await file.read()
-    image = Image.open(io.BytesIO(image_bytes))
-    labels, boxes = model.run_inference(image)
-
-    # Process labels to remove IOB tags and collect unique field names
-    unique_fields = set()
-    for label in labels:
-        # Normalize label by removing IOB-prefix if present ('B-', 'I-')
-        normalized_label = label[2:] if label.startswith(('B-', 'I-')) else label
-        unique_fields.add(normalized_label)
-
-    return JSONResponse(content={"fields": list(unique_fields)})

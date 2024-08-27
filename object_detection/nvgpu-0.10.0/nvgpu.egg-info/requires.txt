@@ -1,0 +1,19 @@
+ansi2html
+arrow
+flask
+flask_restful
+pandas
+psutil
+requests
+six
+termcolor
+tabulate
+
+[:python_version < "3"]
+nvidia-ml-py
+
+[:python_version >= "3" and python_version < "3.6"]
+nvidia-ml-py3
+
+[:python_version >= "3.6"]
+pynvml

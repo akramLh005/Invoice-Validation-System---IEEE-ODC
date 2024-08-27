@@ -1,0 +1,13 @@
+{
+    "threshold": 0.4,
+    "colors": [
+        [255, 0, 0],
+        [0, 255, 0],
+        [0, 0, 255]
+    ],
+    "classes": ["__background__", "stamp", "signature"],
+    "retinanet_torch_serve_url": "http://od:8080/predictions/retinanet",
+    "LMv3_machine_torch_serve_url": "http://tr:8080/predictions/LMv3_machinewritten" ,
+    "LMv3_hand_torch_serve_url": "http://tr:8080/predictions/LMv3_handwritten" ,
+    "allowed_ips": ["*"]
+}
